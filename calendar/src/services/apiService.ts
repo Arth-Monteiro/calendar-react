@@ -12,3 +12,8 @@ export async function getAllEvents(): Promise<IEvent[]> {
   const events = await read("/events");
   return events as IEvent[];
 }
+
+export async function getEventsFilterByDate(from: string, to: string): Promise<IEvent[]> {
+  const events = await read(`/events?date_gte=${from}&date_lte=${to}&_sort=date,time`);
+  return events as IEvent[];
+}
