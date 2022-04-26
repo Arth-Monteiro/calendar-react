@@ -29,8 +29,14 @@
       "id": 3,
       "date": "2021-06-03",
       "desc": "Consulta ortopedista",
-      "time": "08:30",
-      "calendarId": 1
+      "time": "10:30",
+      "calendarId": 1,
+      "calendar": {
+        "id": 1,
+        "name": "Pessoal",
+        "color": "#8E24AA",
+        "isSelected": true
+      }
     },
     {
       "id": 4,
@@ -58,22 +64,11 @@
       "calendarId": 1
     },
     {
-      "date": "2021-06-17",
-      "desc": "Teste 3",
-      "calendarId": 2,
-      "time": "07:00",
-      "id": 9,
-      "calendar": {
-        "id": 2,
-        "name": "Trabalho",
-        "color": "#7CB342"
-      }
-    },
-    {
-      "id": 10,
-      "date": "2021-06-17",
-      "desc": "Teste 2",
-      "calendarId": 1
+      "id": "735c3656-9a14-462d-a0dc-77d8c89c163c",
+      "date": "2021-06-08",
+      "time": "13:00",
+      "desc": "Mais um teste",
+      "calendarId": 2
     }
   ]
 }
