@@ -1,11 +1,15 @@
-import { Avatar, Box, Icon, IconButton } from "@mui/material";
+import { Box, Icon, IconButton } from "@mui/material";
 import { dateToISOString, setMonth } from "../helpers/dateHelpers";
+import IUser from "../interfaces/IUser";
+import UserMenu from "./UserMenu";
 
 interface ICalendarsViewProp {
+  user: IUser;
+  onSignOut: () => void;
   currentPeriod: Date;
 }
 
-export default function CalendarsHeader({ currentPeriod }: ICalendarsViewProp) {
+export default function CalendarsHeader({ user, onSignOut, currentPeriod }: ICalendarsViewProp) {
   const previousPeriod = dateToISOString(setMonth(currentPeriod, false)).substring(0, 7);
   const nextPeriod = dateToISOString(setMonth(currentPeriod)).substring(0, 7);
 
@@ -29,11 +33,7 @@ export default function CalendarsHeader({ currentPeriod }: ICalendarsViewProp) {
       {/* End Name Month */}
 
       {/* Begin Avatar Button */}
-      <IconButton aria-label="User">
-        <Avatar>
-          <Icon>person</Icon>
-        </Avatar>
-      </IconButton>
+      <UserMenu user={user} onSignOut={onSignOut} />
       {/* End Avatar Button */}
     </Box>
   );

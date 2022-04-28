@@ -21,8 +21,14 @@ import {
 } from "../helpers/dateHelpers";
 import { borderColor } from "../components/CalendarsData";
 import EventFormDialog from "../components/EventFormDialog";
+import IUser from "../interfaces/IUser";
 
-export default function CalendarPage() {
+interface ICalendarPageProp {
+  user: IUser;
+  onSignOut: () => void;
+}
+
+export default function CalendarPage({ user, onSignOut }: ICalendarPageProp) {
   const { period } = useParams<{ period: string }>();
 
   const currentPeriod = ISOStringToDate(`${period}-01`);
@@ -109,7 +115,7 @@ export default function CalendarPage() {
       {/* End Calendar Selects Panel */}
 
       <Box flex="1" display="flex" flexDirection="column">
-        <CalendarsHeader currentPeriod={currentPeriod} />
+        <CalendarsHeader currentPeriod={currentPeriod} user={user} onSignOut={onSignOut} />
 
         <CalendarsData
           calendarCells={calendarCells}
