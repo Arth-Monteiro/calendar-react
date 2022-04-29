@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 
-import { DAYS_OF_WEEK } from "../helpers/dateHelpers";
+import { dateToISOString, DAYS_OF_WEEK, TODAY } from "../helpers/dateHelpers";
 import ICalendarCell from "../interfaces/ICalendarCell";
 import React from "react";
 import IEvent from "../interfaces/IEvent";
@@ -107,7 +107,9 @@ export default function CalendarsData({
                 >
                   <div
                     onClick={(evt) => handleDayClick(evt, cell.date)}
-                    className={classes.dayOfMonth}
+                    className={
+                      classes.dayOfMonth + (cell.date === dateToISOString(TODAY) ? " today" : "")
+                    }
                   >
                     {cell.dayOfMonth}
                   </div>

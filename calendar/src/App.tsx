@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import { TODAY, dateToISOString } from "./helpers/dateHelpers";
 import { apiCheckAuthUser, apiMakeLogout } from "./services/apiService";
 import IUser from "./interfaces/IUser";
+import { authContext } from "./contexts/authContext";
 
 export default function App() {
   const period = dateToISOString(TODAY).substring(0, 7);
@@ -20,22 +21,24 @@ export default function App() {
     })();
   }, []);
 
-  async function handleSignOut() {
+  async function onSignOut() {
     if (await apiMakeLogout()) setUser(null);
   }
 
   if (user) {
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate key={period} to={"/calendar/" + period} replace />} />
-          <Route
-            path="/calendar/:period"
-            element={<CalendarPage user={user} onSignOut={handleSignOut} />}
-          />
-          {/* <Route path="users/*" element={<Users />} /> */}
-        </Routes>
-      </BrowserRouter>
+      <authContext.Provider value={{ user, onSignOut }}>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={<Navigate key={period} to={"/calendar/" + period} replace />}
+            />
+            <Route path="/calendar/:period" element={<CalendarPage />} />
+            {/* <Route path="users/*" element={<Users />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </authContext.Provider>
     );
   }
   return <LoginPage onSignIn={setUser} />;
