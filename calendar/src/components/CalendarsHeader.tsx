@@ -1,4 +1,5 @@
 import { Box, Icon, IconButton } from "@mui/material";
+import { memo } from "react";
 import { dateToISOString, setMonth } from "../helpers/dateHelpers";
 import UserMenu from "./UserMenu";
 
@@ -6,7 +7,7 @@ interface ICalendarsViewProp {
   currentPeriod: Date;
 }
 
-export default function CalendarsHeader({ currentPeriod }: ICalendarsViewProp) {
+export const CalendarsHeader = memo(({ currentPeriod }: ICalendarsViewProp) => {
   const previousPeriod = dateToISOString(setMonth(currentPeriod, false)).substring(0, 7);
   const nextPeriod = dateToISOString(setMonth(currentPeriod)).substring(0, 7);
 
@@ -34,4 +35,4 @@ export default function CalendarsHeader({ currentPeriod }: ICalendarsViewProp) {
       {/* End Avatar Button */}
     </Box>
   );
-}
+});

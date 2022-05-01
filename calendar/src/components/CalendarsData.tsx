@@ -1,19 +1,19 @@
-import {
-  Box,
-  Icon,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Dispatch, memo, MouseEvent } from "react";
+
+import { Box, Icon } from "@mui/material";
+import { Table } from "@mui/material";
+import { TableBody } from "@mui/material";
+import { TableCell } from "@mui/material";
+import { TableContainer } from "@mui/material";
+import { TableHead } from "@mui/material";
+import { TableRow } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 
-import { dateToISOString, DAYS_OF_WEEK, TODAY } from "../helpers/dateHelpers";
 import ICalendarCell from "../interfaces/ICalendarCell";
-import React from "react";
 import IEvent from "../interfaces/IEvent";
+
+import { dateToISOString, DAYS_OF_WEEK, TODAY } from "../helpers/dateHelpers";
+import { ICalendarPageAction } from "../reducers/CalendarPageReducer";
 
 export const borderColor = "1px solid rgb(224, 224, 224)";
 const useStyles = makeStyles({
@@ -62,25 +62,20 @@ const useStyles = makeStyles({
 
 interface ICalendarsDataProp {
   calendarCells: ICalendarCell[][];
-  onClickDay: (date: string) => void;
-  onClickEvent: (event: IEvent) => void;
+  dispatch: Dispatch<ICalendarPageAction>;
 }
 
-export default function CalendarsData({
-  calendarCells,
-  onClickDay,
-  onClickEvent,
-}: ICalendarsDataProp) {
+export const CalendarsData = memo(({ calendarCells, dispatch }: ICalendarsDataProp) => {
   const classes = useStyles();
 
-  function handleDayClick(evt: React.MouseEvent, date: string) {
+  function handleDayClick(evt: MouseEvent, date: string) {
     if (evt.target === evt.currentTarget) {
-      onClickDay(date);
+      dispatch({ type: "newDialog", payload: date });
     }
   }
 
   function handleEventClick(event: IEvent) {
-    onClickEvent(event);
+    dispatch({ type: "edit", payload: event });
   }
 
   return (
@@ -155,4 +150,4 @@ export default function CalendarsData({
       {/* End Calendar Table */}
     </TableContainer>
   );
-}
+});

@@ -1,18 +1,14 @@
+import { Dispatch, memo } from "react";
 import { Box, FormControlLabel, Checkbox } from "@mui/material";
 import ICalendar from "../interfaces/ICalendar";
+import { ICalendarPageAction } from "../reducers/CalendarPageReducer";
 
 interface ICalendarsViewProp {
   calendars: ICalendar[];
-  onChange: (index: number) => void;
+  dispatch: Dispatch<ICalendarPageAction>;
 }
 
-export default function CalendarsView({ calendars, onChange }: ICalendarsViewProp) {
-  function toggleCalendar(index: number) {
-    if (onChange) {
-      onChange(index);
-    }
-  }
-
+export const CalendarsView = memo(({ calendars, dispatch }: ICalendarsViewProp) => {
   return (
     <Box marginTop="64px">
       <h3>Calendars</h3>
@@ -24,7 +20,7 @@ export default function CalendarsView({ calendars, onChange }: ICalendarsViewPro
                 <Checkbox
                   style={{ color: calendar.color }}
                   checked={calendar.isSelected}
-                  onChange={() => toggleCalendar(index)}
+                  onChange={() => dispatch({ type: "toggleCalendar", payload: index })}
                 />
               }
               label={calendar.name}
@@ -34,4 +30,4 @@ export default function CalendarsView({ calendars, onChange }: ICalendarsViewPro
       })}
     </Box>
   );
-}
+});
