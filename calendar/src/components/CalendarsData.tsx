@@ -68,7 +68,6 @@ interface ICalendarsDataProp {
 export const CalendarsData = memo(({ calendarCells, dispatch }: ICalendarsDataProp) => {
   const classes = useStyles();
 
-  console.log("a");
   function handleDayClick(evt: MouseEvent, date: string) {
     if (evt.target === evt.currentTarget) {
       dispatch({ type: "newDialog", payload: date });

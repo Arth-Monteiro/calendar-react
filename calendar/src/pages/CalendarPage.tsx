@@ -18,23 +18,22 @@ import { DAYS_OF_WEEK, ISOStringToDate } from "../helpers/dateHelpers";
 import { generateWeeksFrom } from "../helpers/dateHelpers";
 
 function useCalendarPageState(period: string) {
-  const currentPeriod = ISOStringToDate(`${period}-01`);
-
   const [{ calendars, events, event }, dispatch] = useReducer(calendarPageReducer, {
     calendars: [],
     events: [],
     event: null,
   });
 
-  const [calendarCells, firstDate, lastDate] = useMemo(() => {
+  const [calendarCells, firstDate, lastDate, currentPeriod] = useMemo(() => {
+    const currentPeriod = ISOStringToDate(`${period}-01`);
     const weeks = generateWeeksFrom(currentPeriod);
     const firstDate = weeks[0][0];
     const lastDate = weeks[weeks.length - 1][DAYS_OF_WEEK.length - 1];
 
     const calendarCells = generateCalendarCells(weeks, calendars, events);
 
-    return [calendarCells, firstDate, lastDate];
-  }, [calendars, currentPeriod, events]);
+    return [calendarCells, firstDate, lastDate, currentPeriod];
+  }, [calendars, events, period]);
 
   // Get the calendars and the events
   useEffect(() => {
@@ -45,23 +44,23 @@ function useCalendarPageState(period: string) {
     );
   }, [firstDate, lastDate]);
 
+  const handleCancelDialog = useCallback(() => {
+    dispatch({ type: "closeDialog" });
+  }, []);
+
   const handleSaveDialog = useCallback(async () => {
     const updatedEvents = await getEventsFilterByDate(firstDate, lastDate);
     dispatch({ type: "load", payload: { events: updatedEvents } });
   }, [firstDate, lastDate]);
 
-  const handleCancelDialog = useCallback(() => {
-    dispatch({ type: "closeDialog" });
-  }, []);
-
   return {
+    currentPeriod,
     calendarCells,
     calendars,
     event,
     dispatch,
-    currentPeriod,
-    handleSaveDialog,
     handleCancelDialog,
+    handleSaveDialog,
   };
 }
 
@@ -69,13 +68,13 @@ export default function CalendarPage() {
   const { period } = useParams<{ period: string }>();
 
   const {
+    currentPeriod,
     calendarCells,
     calendars,
     event,
     dispatch,
-    currentPeriod,
-    handleSaveDialog,
     handleCancelDialog,
+    handleSaveDialog,
   } = useCalendarPageState(period!);
 
   return (
